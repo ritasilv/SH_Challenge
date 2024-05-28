@@ -1,0 +1,18 @@
+#Write a SQL query to find the average baseline pain level, the count of patients, and the maximum pain level at baseline, grouped by client_id, for those who signed up in January 2024 and had a baseline pain level greater than 5, and have a reassessment value.
+
+
+select d.client_id, 
+	avg(b.value) as avg_pain, 
+    count(distinct b.patient_id) as c_patient,
+	max(b.value) as max_pain
+from baseline b
+inner join demographics d
+on b.patient_id = d.patient_id
+inner join reassessment_12s_pain r
+on d.patient_id = r.patient_id
+where b.key = 'pain_level'
+and d.date_signup between '2024-01-01' and '2024-01-31'
+and b.value > 5
+group by 1;
+
+
